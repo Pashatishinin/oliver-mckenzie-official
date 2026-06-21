@@ -1,0 +1,112 @@
+---
+import { fetchProjects } from "../../../entities/project/project.fetch";
+// biome-ignore lint/correctness/noUnusedImports: used in template
+import NavLink from "../../../shared/ui/NavLink.astro";
+
+// biome-ignore lint/correctness/noUnusedVariables: used in template
+const isHome = Astro.url.pathname === "/";
+// biome-ignore lint/correctness/noUnusedVariables: used in template
+const projects = await fetchProjects();
+---
+
+<div
+    id="menu-overlay"
+    class="fixed inset-0 z-99998 bg-(--color-background) flex flex-col md:flex-row translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]"
+>
+    <div
+        id="project-preview"
+        class="hidden md:block absolute top-16 left-16 w-70 h-70 rounded overflow-hidden pointer-events-none opacity-0 transition-opacity duration-300 z-10"
+    >
+        <img
+            id="project-preview-img"
+            src=""
+            alt=""
+            class="w-full h-full object-cover"
+        />
+    </div>
+
+    <div
+        class="flex flex-col justify-end px-8 md:px-16 py-16 md:py-24 md:w-1/2 border-b md:border-b-0 md:border-r border-white/10"
+    >
+        <p
+            class="text-xs uppercase tracking-widest opacity-40 font-semibold mb-6"
+        >
+            Menu
+        </p>
+        <nav class="flex flex-col gap-2">
+            <NavLink
+                href="/"
+                label="Home"
+                class="menu-link text-[48px] md:text-[72px] tracking-tighter leading-none"
+            />
+            {
+                isHome && (
+                    <>
+                        <NavLink
+                            href="/#portfolio"
+                            label="Portfolio"
+                            class="menu-link text-[48px] md:text-[72px] tracking-tighter leading-none "
+                        />
+                        <NavLink
+                            href="/#career"
+                            label="Career"
+                            class="menu-link text-[48px] md:text-[72px] tracking-tighter leading-none "
+                        />
+                    </>
+                )
+            }
+        </nav>
+    </div>
+
+    <div
+        class="flex flex-col justify-end px-8 md:px-16 py-16 md:py-24 md:w-1/2 overflow-y-auto"
+    >
+        <p
+            class="text-xs uppercase tracking-widest opacity-40 font-semibold mb-6"
+        >
+            Projects
+        </p>
+        <ul class="flex flex-col gap-2">
+            {
+                projects.map((project) => (
+                    <li>
+                        <NavLink
+                            href={`/${project.slug}`}
+                            label={project.title}
+                            class="menu-link project-link text-[32px] md:text-[48px] tracking-tighter leading-none block"
+                            data-img={project.coverImageUrl ?? ""}
+                            data-alt={project.coverImageAlt}
+                        />
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</div>
+
+<script>
+    const preview = document.getElementById("project-preview");
+    const previewImg = document.getElementById(
+        "project-preview-img",
+    ) as HTMLImageElement | null;
+
+    document
+        .querySelectorAll<HTMLAnchorElement>(".project-link")
+        .forEach((link) => {
+            link.addEventListener("mouseenter", () => {
+                const src = link.dataset.img;
+                const alt = link.dataset.alt ?? "";
+                if (!src || !previewImg || !preview) return;
+                previewImg.src = src;
+                previewImg.alt = alt;
+                preview.classList.remove("opacity-0");
+                preview.classList.add("opacity-100");
+            });
+
+            link.addEventListener("mouseleave", () => {
+                if (!preview) return;
+                preview.classList.remove("opacity-100");
+                preview.classList.add("opacity-0");
+            });
+        });
+</script>

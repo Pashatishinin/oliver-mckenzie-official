@@ -1,0 +1,61 @@
+---
+import type { Project } from "../../../entities/project/project.types";
+
+interface Props {
+    project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<section class="min-h-screen">
+    <main>
+        <div class="p-16">
+            {
+                project.title && (
+                    <h2 class="text-8xl font-bold tracking-tighter mb-16 max-w-200">
+                        {project.title}
+                    </h2>
+                )
+            }
+        </div>
+        {
+            project.projectContent.map((block) => (
+                <section class="px-3 ">
+                    <div class="px-16 pt-8">
+                        {block.contentTitle && (
+                            <h2 class="text-4xl font-bold tracking-tighter mb-16">
+                                {block.contentTitle}
+                            </h2>
+                        )}
+                    </div>
+
+                    <div class="flex flex-col md:flex-row gap-1">
+                        <div class="flex flex-col gap-1 flex-1">
+                            {block.images
+                                .filter((_, i) => i % 2 === 0)
+                                .map((img) => (
+                                    <img
+                                        src={img.url}
+                                        alt={img.alt}
+                                        class="w-full h-auto block rounded-sm"
+                                    />
+                                ))}
+                        </div>
+                        <div class="flex flex-col gap-1 flex-1 ">
+                            {block.images
+                                .filter((_, i) => i % 2 !== 0)
+                                .map((img) => (
+                                    <img
+                                        src={img.url}
+                                        alt={img.alt}
+                                        class="w-full h-auto block rounded-sm"
+                                    />
+                                ))}
+                        </div>
+                    </div>
+                </section>
+            ))
+        }
+    </main>
+</section>

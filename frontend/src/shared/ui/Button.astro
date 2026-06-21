@@ -1,0 +1,53 @@
+---
+interface Props {
+    href?: string;
+    label: string;
+    class?: string;
+    id?: string;
+}
+
+const { href, label, class: className = "", id } = Astro.props;
+
+// biome-ignore lint/correctness/noUnusedVariables: used in template
+const base = `btn-cta relative inline-block self-start overflow-hidden text-xs uppercase tracking-widest font-semibold text-(--color-text) px-3 py-2 rounded-sm ${className} hover:scale-105 duration-500 cursor-pointer border-[0.3px] hover:border-[#e8723a]`;
+---
+
+{
+    href ? (
+        <a href={href} id={id} class={base}>
+            <span class="btn-bg c1 absolute inset-0" />
+            <span class="btn-bg c2 absolute inset-0" />
+            <span class="btn-bg c3 absolute inset-0" />
+            <span class="btn-bg c4 absolute inset-0" />
+            <span class="relative z-10">{label}</span>
+        </a>
+    ) : (
+        <button type="button" id={id} class={base}>
+            <span class="btn-bg c1 absolute inset-0" />
+            <span class="btn-bg c2 absolute inset-0" />
+            <span class="btn-bg c3 absolute inset-0" />
+            <span class="btn-bg c4 absolute inset-0" />
+            <span class="relative z-10">{label}</span>
+        </button>
+    )
+}
+
+<style>
+    .c1 {
+        background: #e8723a;
+        clip-path: inset(0 0% 0 0 round 2px);
+    }
+
+    .btn-bg {
+        clip-path: inset(0 100% 0 0 round 2px);
+        transition: clip-path 0.2s ease;
+    }
+
+    .c2 { background: #ff5722; transition-delay: 0.3s; }
+    .c3 { background: #ffa726; transition-delay: 0.15s; }
+    .c4 { background: #ff7043; transition-delay: 0s; }
+
+    .btn-cta:hover .c2 { clip-path: inset(0 0% 0 0 round 2px); transition-delay: 0s; }
+    .btn-cta:hover .c3 { clip-path: inset(0 0% 0 0 round 2px); transition-delay: 0.15s; }
+    .btn-cta:hover .c4 { clip-path: inset(0 0% 0 0 round 2px); transition-delay: 0.3s; }
+</style>

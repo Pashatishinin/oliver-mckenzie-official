@@ -1,0 +1,21 @@
+---
+import { fetchHero } from "../../../entities/hero/hero.fetch";
+
+// biome-ignore lint/correctness/noUnusedVariables: used in template
+const hero = await fetchHero();
+---
+
+<section id="picture-section" class="relative h-screen overflow-hidden w-full">
+    {
+        hero?.imageUrl && (
+            <div class="absolute inset-0 flex items-center justify-center z-20">
+                <img
+                    id="picture-image"
+                    src={hero.imageUrl}
+                    alt={hero.imageAlt}
+                    class="w-full h-full object-cover"
+                />
+            </div>
+        )
+    }
+</section>

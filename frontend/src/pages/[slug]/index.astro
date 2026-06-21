@@ -1,0 +1,27 @@
+---
+import { fetchProjects } from "../../entities/project/project.fetch";
+import type { Project } from "../../entities/project/project.types";
+// biome-ignore lint/correctness/noUnusedImports: used in template
+import Layout from "../../layouts/Layout.astro";
+import FooterSection from "../../views/footer/FooterSection.astro";
+import ProjectGallery from "../../views/project/project-gallery/ProjectGallery.astro";
+
+export async function getStaticPaths() {
+    const projects = await fetchProjects();
+    return projects.map((project) => ({
+        params: { slug: project.slug },
+        props: { project },
+    }));
+}
+
+interface Props {
+    project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<Layout title={project.title}>
+    <ProjectGallery project={project} />
+    <FooterSection />
+</Layout>

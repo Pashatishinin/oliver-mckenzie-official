@@ -1,0 +1,38 @@
+---
+import { fetchHero } from "../../../entities/hero/hero.fetch";
+
+// biome-ignore lint/correctness/noUnusedVariables: used in template
+const hero = await fetchHero();
+---
+
+<section
+    id="hero-section"
+    class="relative h-screen w-full overflow-hidden bg-primary max-h-200 px-16"
+>
+    <h1
+        id="hero-title"
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-full w-full max-w-200 text-center text-[44px] sm:text-[70px] md:text-[100px] font-bold tracking-tighter leading-none z-10"
+    >
+        {hero?.title ?? "OLIVER McKENZIE"}
+    </h1>
+
+    {
+        hero?.smallImageUrl && (
+            <div class="absolute inset-0 flex items-center justify-center z-20">
+                <img
+                    id="hero-image"
+                    src={hero.smallImageUrl}
+                    alt={hero.smallImageAlt}
+                    class="w-24 h-16 sm:w-32 sm:h-20 md:w-40 md:h-25 object-cover rotate-15"
+                />
+            </div>
+        )
+    }
+
+    <p
+        id="hero-subtitle"
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-0 w-full max-w-200 text-center text-[44px] sm:text-[70px] md:text-[100px] font-bold tracking-tighter leading-none z-30"
+    >
+        {hero?.subTitle ?? "TEAMWEAR DESIGNER"}
+    </p>
+</section>

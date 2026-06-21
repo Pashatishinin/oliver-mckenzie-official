@@ -1,0 +1,23 @@
+---
+import { fetchLogos } from "../../../entities/logo/logo.fetch";
+
+// biome-ignore lint/correctness/noUnusedVariables: used in template
+const logos = await fetchLogos();
+---
+
+<section class="px-4 md:px-16 flex flex-col items-center py-8 md:pb-16">
+    <h2 class="text-sm md:text-base mb-6 md:mb-8 uppercase tracking-widest opacity-50">Trusted by:</h2>
+    <div class="flex gap-4 flex-wrap justify-center items-center">
+        {
+            logos.map((logo) => (
+                logo.imageUrl && (
+                    <img
+                        src={logo.imageUrl}
+                        alt={logo.imageAlt}
+                        class="w-16 h-16 md:w-32 md:h-32 object-contain"
+                    />
+                )
+            ))
+        }
+    </div>
+</section>

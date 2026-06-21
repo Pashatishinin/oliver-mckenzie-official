@@ -1,0 +1,42 @@
+---
+import { fetchCareers } from "../../../entities/career/career.fetch";
+// biome-ignore lint/correctness/noUnusedImports: used in template
+import CareerCard from "./ui/CareerCard.astro";
+
+// biome-ignore lint/correctness/noUnusedVariables: used in template
+const careers = await fetchCareers();
+// biome-ignore lint/correctness/noUnusedVariables: used in template
+const rotations = [2, -3, 1, -2, 3, -1, 2, -1];
+---
+
+<section class="py-12 md:py-20" id="career">
+    <div class="px-4 md:px-16 mb-10 md:mb-16">
+        <h2 class="text-[48px] md:text-[100px] font-bold tracking-tighter leading-none">
+            CAREER
+        </h2>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-6 md:gap-10 px-0 md:px-16 pb-8 items-center md:items-end scrollbar-hide">
+        {
+            careers.map((career, i) => (
+                <CareerCard
+                    title={career.title}
+                    coverImageUrl={career.coverImageUrl}
+                    coverImageAlt={career.coverImageAlt}
+                    careerContent={career.careerContent}
+                    rotation={rotations[i % rotations.length]}
+                />
+            ))
+        }
+    </div>
+</section>
+
+<style>
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+</style>

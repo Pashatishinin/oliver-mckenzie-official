@@ -1,0 +1,40 @@
+---
+import { fetchProjects } from "../../../../entities/project/project.fetch";
+// biome-ignore lint/correctness/noUnusedImports: used in template
+import Button from "../../../../shared/ui/Button.astro";
+
+// biome-ignore lint/correctness/noUnusedVariables: used in template
+const projects = await fetchProjects();
+---
+
+<div class="flex flex-col p-3">
+    {
+        projects.map((project, i) => {
+            const isEven = i % 2 === 0;
+            return (
+                <a
+                    href={`/${project.slug}`}
+                    class={`flex flex-col md:flex-row md:items-center group ${isEven ? "" : "md:flex-row-reverse"}`}
+                >
+                    <div class="w-full md:w-1/2 overflow-hidden aspect-square rounded-sm">
+                        {project.coverImageUrl ? (
+                            <img
+                                src={project.coverImageUrl}
+                                alt={project.coverImageAlt}
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 rounded-sm"
+                            />
+                        ) : (
+                            <div class="w-full h-full bg-gray-200" />
+                        )}
+                    </div>
+                    <div class="w-full md:w-1/2 flex flex-col gap-3 px-6 py-6 md:px-12 md:py-0">
+                        <h3 class="text-3xl md:text-5xl font-bold tracking-tighter leading-none">
+                            {project.title}
+                        </h3>
+                        <Button label="View Project →" />
+                    </div>
+                </a>
+            );
+        })
+    }
+</div>
